@@ -1,13 +1,13 @@
 <script lang="ts">
-	import Input from '$lib/components/Form/Input.svelte';
+	import Input from '$lib/components/Input.svelte';
 	import Providers from '$lib/components/Providers.svelte';
 	import { npiSchema } from '$lib/schemas/npi';
 
 	let providers: any;
-	let firstName = '';
-	let lastName = '';
-	let city = '';
-	let state = '';
+	let firstName = 'do*';
+	let lastName = 'jo*';
+	let city = 'new york';
+	let state = 'ny';
 	let errors = {
 		state: '',
 		city: ''
@@ -39,6 +39,7 @@
 			}
 		);
 		const data = await response.json();
+		console.log(data);
 		providers = data.results;
 	};
 </script>

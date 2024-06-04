@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { type Provider } from '../../../types/npi.types';
+	import { type Provider } from '../../types/npi.types';
 	export let provider: Provider;
 </script>
 
@@ -12,11 +12,14 @@
 		{:else}
 			<h4><b>{provider.basic.organization_name} </b></h4>
 		{/if}
-		{#each provider.taxonomies as taxonomy}
-			<p>{taxonomy.desc}</p>
-		{/each}
+		<p>{provider.taxonomies[0].desc || ''}</p>
 		<h2>Locations</h2>
-		{#each provider.addresses as address}
+		{#each provider.addresses as address, index}
+			{#if index === 0}
+				<h5>Primary location</h5>
+			{:else}
+				<h5>Mailing Address</h5>
+			{/if}
 			<p>{address.address_1}</p>
 			<p>{address.city}, {address.state} {address.postal_code}</p>
 			<p>{address.telephone_number || ''}</p>
@@ -30,7 +33,7 @@
 		transition: 0.3s;
 		border-radius: 5px;
 		width: 300px;
-		height: 500px;
+		height: 600px;
 	}
 
 	.card:hover {

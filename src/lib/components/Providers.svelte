@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Card from './Form/Card.svelte';
+	import Card from './Card.svelte';
 	import { type Provider } from '../../types/npi.types';
 	export let providers: Provider[];
 </script>

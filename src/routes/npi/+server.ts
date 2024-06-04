@@ -14,6 +14,7 @@ export const GET = async (event: RequestEvent) => {
 			{ method: 'GET' }
 		);
 		const data = await response.json();
+
 		return json({ result_count: data.result_count, results: data.results });
 	} catch (err) {
 		if (err instanceof Error) {
