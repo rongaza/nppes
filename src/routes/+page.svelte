@@ -1,12 +1,13 @@
 <script lang="ts">
 	import Input from '$lib/components/Form/Input.svelte';
+	import Providers from '$lib/components/Providers.svelte';
 	import { npiSchema } from '$lib/schemas/npi';
 
 	let providers: any;
-	let firstName = 'john';
-	let lastName = 'smith';
+	let firstName = '';
+	let lastName = '';
 	let city = 'New York';
-	let state = 'N';
+	let state = 'NY';
 	let errors = {
 		state: ''
 	};
@@ -30,19 +31,40 @@
 				}
 			}
 		);
-		providers = await response.json();
-		console.log(providers);
+		const data = await response.json();
+		providers = data.results;
+		console.log('providers', providers);
 	};
 </script>
 
 <div>
-	<Input bind:value={firstName} name="firstName" label="First Name" />
-	<Input bind:value={lastName} name="lastName" label="Last Name" />
-	<Input bind:value={city} name="city" label="City" />
-	<Input bind:value={state} name="state" label="State" error={errors.state} />
-	<button on:click={() => getProviders(firstName, lastName, city, state)}>Get Providers</button>
+	<div class="search_fields">
+		<div><Input bind:value={firstName} name="firstName" label="First Name" /></div>
+		<div><Input bind:value={lastName} name="lastName" label="Last Name" /></div>
+		<div><Input bind:value={city} name="city" label="City" /></div>
+		<div><Input bind:value={state} name="state" label="State" error={errors.state} /></div>
+	</div>
+	<div class="search_button">
+		<button on:click={() => getProviders(firstName, lastName, city, state)}>Get Providers</button>
+	</div>
 
-	{#if providers !== undefined}
-		<p>Providers</p>
-	{/if}
+	<Providers {providers} />
 </div>
+
+<style>
+	.search_fields {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		/* height: 100px; */
+	}
+
+	.search_button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	div {
+		margin: 10px;
+	}
+</style>
