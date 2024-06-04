@@ -29,6 +29,10 @@ based on it's enumeration type of
 
 When displaying the provider taxonimies I only chose the first in the array.
 
+Tests
+I thought I would have more time for this. I would test functions like the schema
+validation to make sure it returned what I expected.
+
 ```
 NPI-1
 NPI-2

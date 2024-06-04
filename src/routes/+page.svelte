@@ -4,13 +4,15 @@
 	import { npiSchema } from '$lib/schemas/npi';
 
 	let providers: any;
-	let firstName = 'do*';
-	let lastName = 'jo*';
-	let city = 'new york';
-	let state = 'ny';
+	let firstName = '';
+	let lastName = '';
+	let city = '';
+	let state = '';
 	let errors = {
 		state: '',
-		city: ''
+		city: '',
+		firstName: '',
+		lastName: ''
 	};
 
 	const getProviders = async (firstName: string, lastName: string, city: string, state: string) => {
@@ -23,10 +25,14 @@
 			const errorMessage = validInput.error.message.toLowerCase();
 			errors.city = errorMessage.includes('city') ? validInput.error.message : '';
 			errors.state = errorMessage.includes('state') ? validInput.error.message : '';
+			errors.firstName = errorMessage.includes('firstname') ? validInput.error.message : '';
+			errors.lastName = errorMessage.includes('lastname') ? validInput.error.message : '';
 			return;
 		} else {
 			errors.state = '';
 			errors.city = '';
+			errors.firstName = '';
+			errors.lastName = '';
 		}
 
 		const response = await fetch(
@@ -46,8 +52,12 @@
 
 <div>
 	<div class="search_fields">
-		<div><Input bind:value={firstName} name="firstName" label="First Name" /></div>
-		<div><Input bind:value={lastName} name="lastName" label="Last Name" /></div>
+		<div>
+			<Input bind:value={firstName} name="firstName" label="First Name" error={errors.firstName} />
+		</div>
+		<div>
+			<Input bind:value={lastName} name="lastName" label="Last Name" error={errors.lastName} />
+		</div>
 		<div><Input bind:value={city} name="city" label="City" error={errors.city} /></div>
 		<div><Input bind:value={state} name="state" label="State" error={errors.state} /></div>
 	</div>
@@ -63,7 +73,6 @@
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
-		/* height: 100px; */
 	}
 
 	.search_button {
