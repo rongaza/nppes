@@ -6,20 +6,27 @@
 	let providers: any;
 	let firstName = '';
 	let lastName = '';
-	let city = 'New York';
-	let state = 'NY';
+	let city = '';
+	let state = '';
 	let errors = {
-		state: ''
+		state: '',
+		city: ''
 	};
 
 	const getProviders = async (firstName: string, lastName: string, city: string, state: string) => {
-		const validInput = npiSchema.validate({ firstName, lastName, city, state });
+		const validInput = npiSchema.validate(
+			{ firstName, lastName, city, state },
+			{ abortEarly: false }
+		);
 
 		if (validInput.error) {
-			errors.state = validInput.error.message;
+			const errorMessage = validInput.error.message.toLowerCase();
+			errors.city = errorMessage.includes('city') ? validInput.error.message : '';
+			errors.state = errorMessage.includes('state') ? validInput.error.message : '';
 			return;
 		} else {
 			errors.state = '';
+			errors.city = '';
 		}
 
 		const response = await fetch(
@@ -33,7 +40,6 @@
 		);
 		const data = await response.json();
 		providers = data.results;
-		console.log('providers', providers);
 	};
 </script>
 
@@ -41,7 +47,7 @@
 	<div class="search_fields">
 		<div><Input bind:value={firstName} name="firstName" label="First Name" /></div>
 		<div><Input bind:value={lastName} name="lastName" label="Last Name" /></div>
-		<div><Input bind:value={city} name="city" label="City" /></div>
+		<div><Input bind:value={city} name="city" label="City" error={errors.city} /></div>
 		<div><Input bind:value={state} name="state" label="State" error={errors.state} /></div>
 	</div>
 	<div class="search_button">
